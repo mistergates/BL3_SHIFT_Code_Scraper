@@ -1,6 +1,9 @@
 # BL3_SHIFT_Code_Scraper
 Scrape BL3 SHIFT codes every hour and send any new found codes to email recipients.
 
+## Requirements
+*BeautifulSoup 4*: `pip install beautifulsoup4`
+
 ## Setup
 The following environment variables must exist:
 
