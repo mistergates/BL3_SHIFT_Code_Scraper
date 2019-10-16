@@ -16,4 +16,6 @@ The following environment variables must exist:
 `SHIFT_CODE_RECIPIENTS`: Email addresses, semicolon delimited
 
 ## Run
-Once the afformentioned environment variables exist, simply run the script: `python3 scraper.py`
+Once the afformentioned requirements and setup are complete, simply run the script:
+
+`python3 scraper.py`
