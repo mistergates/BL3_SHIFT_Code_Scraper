@@ -3,8 +3,10 @@ import time
 import smtplib
 import os
 import logging
+import argparse
 from datetime import datetime
 from bs4 import BeautifulSoup
+from email.mime.text import MIMEText
 
 GAME = 'BL3' # BL2, BL3
 SHIFT_CODES_URL = 'https://shift.orcicorn.com/shift-code/'
@@ -56,16 +58,18 @@ if __name__ == '__main__':
             server = smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT)
             server.ehlo()
             server.login(SMTP_USER, SMTP_PASSWORD)
-            msg = '\r\n'.join(
-                [
-                    'From: {}'.format(SMTP_USER),
-                    'To: {}'.format(RECIPIENTS),
-                    'Subject: {} Shift Codes'.format(GAME),
-                    '',
-                    '{}'.format('\n'.join(new_codes)) + '\n\n{}'.format(REWARDS_URL)
-                ]
+            
+            body = '<html><head></head><body><p>{}<br><br>{}</p></body></html>'.format(
+                '\n'.join(new_codes),
+                REWARDS_URL
             )
-            server.sendmail(SMTP_USER, RECIPIENTS, msg)
+
+            for recipient in RECIPIENTS.split(';'):
+                msg = MIMEText(body, 'html')
+                msg['Subject'] = '{} Shift Codes'.format(GAME)
+                msg['From'] = SMTP_USER
+                msg['To'] = recipient
+                server.sendmail(SMTP_USER, recipient, msg.as_string())
 
         # Sleep for 1 hour
         time.sleep(3600)
